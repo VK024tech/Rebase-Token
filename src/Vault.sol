@@ -17,7 +17,7 @@ contract Vault{
         i_rebaseToken = _rebaseToken;
     }
 
-    recieve() external payable{}
+    receive() external payable{}
 
     /**
      * @notice allows user to deposit ETH into the vault and mint rebase token in return
@@ -33,7 +33,7 @@ contract Vault{
      */
     function redeem(uint256 _amount) external{
         i_rebaseToken.burn(msg.sender, _amount);
-        (bool success, ) = payable(msg.sender).call(value:_amount)("");
+        (bool success, ) = payable(msg.sender).call{value: _amount}("");
 
         if(!success){
             revert Vault__RedeemFailed();
